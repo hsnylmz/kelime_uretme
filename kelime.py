@@ -69,7 +69,11 @@ window.geometry("700x80")
 windowBackground = '#ADD8E6'
 window.configure(bg=windowBackground)
 window.resizable(False,False)
-window.iconbitmap('elif.ico')
+try:
+    window.iconbitmap('elif.ico')
+except:
+    pass
+    
 
 yazi=Label(window, text="Harfleri Giriniz ", font=('Helvetica bold',24),bg=windowBackground)
 yazi.pack(side='left', padx=5, pady=5)
