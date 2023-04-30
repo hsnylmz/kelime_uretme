@@ -4,6 +4,11 @@ from tkinter import *
 import tkinter.font as tkFont
 from tkinter import messagebox
 
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
+
+
+
 def limit_entry_to_one_char(entry):
     def on_validate(text):
         if len(text) > 1:
@@ -64,10 +69,11 @@ def show_permutations():
     os.startfile(file_path)
 
 # Tkinter penceresini oluşturun
-window = Tk(className='Kelime Oluştur by hsnylmz')
-window.geometry("700x80")
-windowBackground = '#ADD8E6'
-window.configure(bg=windowBackground)
+#window = Tk(className='Kelime Oluştur by hsnylmz')
+window = ttk.Window(title="kelimeOluştur by hsnylmz", themename="yeti")
+window.geometry("550x80")
+#windowBackground = '#ADD8E6'
+#window.configure(bg=windowBackground)
 window.resizable(False,False)
 try:
     window.iconbitmap('elif.ico')
@@ -75,27 +81,28 @@ except:
     pass
     
 
-yazi=Label(window, text="Harfleri Giriniz ", font=('Helvetica bold',24),bg=windowBackground)
+
+yazi=Label(window, text="Harfleri Giriniz ", font=('Helvetica bold',18))
 yazi.pack(side='left', padx=5, pady=5)
 
 word_entry_H1 = Entry(window, width=3, justify='center')
-word_entry_H1.config(font=('Helvetica bold',24))
+word_entry_H1.config(font=('Helvetica bold',18))
 word_entry_H1.pack(side='left', padx=5, pady=5)
 
 
 word_entry_H2 = Entry(window, width=3, justify='center')
-word_entry_H2.config(font=('Helvetica bold',24))
+word_entry_H2.config(font=('Helvetica bold',18))
 word_entry_H2.pack(side='left', padx=5, pady=5)
 
 word_entry_H3 = Entry(window, width=3, justify='center')
-word_entry_H3.config(font=('Helvetica bold',24))
+word_entry_H3.config(font=('Helvetica bold',18))
 word_entry_H3.pack(side='left', padx=5, pady=5)
 
 # Kelime girişi yaptıktan sonra sıralamaları göstermek için bir düğme oluşturun
-permute_button = Button(window, text="Oluştur", command=check_input, width=10,font=('Helvetica bold',16))
+permute_button = ttk.Button(window, text="OLUŞTUR", command=check_input, width=10, bootstyle=SUCCESS)
 permute_button.pack(side='left', padx=5, pady=5)
 
-clear_button = Button(window, text="Temizle", command=clear_entries, width=10, font=('Helvetica bold', 16))
+clear_button = ttk.Button(window, text="TEMİZLE", command=clear_entries, width=10, bootstyle=DANGER)
 clear_button.pack(side='left', padx=5, pady=5)
 
 word_entry_H1.focus_set()
