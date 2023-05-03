@@ -7,8 +7,6 @@ from tkinter import messagebox
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
-
-
 def limit_entry_to_one_char(entry):
     def on_validate(text):
         if len(text) > 1:
@@ -36,7 +34,7 @@ def show_permutations():
     H3=(word_entry_H3.get()).upper()
     list1 = [H1, H2, H3]
     list2 = ['e', 'i', 'u']
-    dosya_adi = H1+H2+H3+'.txt'
+    dosya_adi = H1+H2+H3+'.html'
     
     folder_name="kelimeler"
     folder_path = os.path.join(os.getcwd(), folder_name)
@@ -48,6 +46,7 @@ def show_permutations():
     #print(dosya_adi)
     
     f = open(file_path, "w")
+    f.write('<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Kelime</title></head><body>')
     # Tüm K, L, M permütasyonlarını oluştur
     perms = itertools.permutations(list1)
     # Her bir permütasyonu, a, b, c harflerinin tüm kombinasyonlarıyla birleştir
@@ -55,16 +54,21 @@ def show_permutations():
     for perm in perms:
         for combo in itertools.product(list2, repeat=len(list2)):
             merged = [x for pair in zip(perm, combo) for x in pair]
-            result.append(' '.join(merged))
+            result.append(''.join(merged))
     # Tekrarlanan kelimeleri kaldır
     result = set(result)
 
     # Sonucu alfabetik olarak sırala ve ekrana yazdır
     for word in sorted(result):
+        f.write('<a href="https://www.google.com/search?q=')
         f.write(word)
-        f.write('\n')
+        f.write('" target="_blank"><span style="font-size: 24px;">')
+        f.write(word)
+        f.write('</span></a>')
+        f.write('<br>')
         #print(word)
 
+    f.write('</body></html>')
     f.close()
     os.startfile(file_path)
 
@@ -80,8 +84,6 @@ try:
 except:
     pass
     
-
-
 yazi=Label(window, text="Harfleri Giriniz ", font=('Helvetica bold',18))
 yazi.pack(side='left', padx=5, pady=5)
 
