@@ -60,12 +60,20 @@ def show_permutations():
 
     # Sonucu alfabetik olarak sırala ve ekrana yazdır
     for word in sorted(result):
-        f.write('<a href="https://www.google.com/search?q=')
+        f.write('<span>Google\'da ara : </span><a href="https://www.google.com/search?q=')
+        f.write(word)
+        f.write('" target="_blank"><span style="font-size: 24px;">')
+        f.write(word)
+        f.write('</span></a>&nbsp;&nbsp;&nbsp;')
+        #f.write('<br>')
+
+        f.write('<span>Google translate\'de ara : </span><a href="https://translate.google.com/?source=gtx&sl=auto&tl=tr&text=')
         f.write(word)
         f.write('" target="_blank"><span style="font-size: 24px;">')
         f.write(word)
         f.write('</span></a>')
         f.write('<br>')
+
         #print(word)
 
     f.write('</body></html>')
@@ -74,7 +82,7 @@ def show_permutations():
 
 # Tkinter penceresini oluşturun
 #window = Tk(className='Kelime Oluştur by hsnylmz')
-window = ttk.Window(title="kelimeOluştur by hsnylmz", themename="yeti")
+window = ttk.Window(title="kelimeOluştur by hsnylmz", themename="darkly")
 window.geometry("550x80")
 #windowBackground = '#ADD8E6'
 #window.configure(bg=windowBackground)
