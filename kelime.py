@@ -1,40 +1,19 @@
-import itertools
-import os
-from tkinter import *
-import tkinter.font as tkFont
-from tkinter import messagebox
-
+import tkinter as tk
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
-
-def limit_entry_to_one_char(entry):
-    def on_validate(text):
-        if len(text) > 1:
-            entry.bell() # hata bildirimi
-            return False
-        else:
-            return True
-    entry['validate'] = 'all'
-    entry['validatecommand'] = (entry.register(on_validate), '%P')
-
-def check_input():
-    if not word_entry_H1.get() or not word_entry_H2.get() or not word_entry_H3.get():
-        messagebox.showwarning("Uyarı", "Lütfen tüm harf kutularını doldurun!")
-    else:
-        show_permutations()
-
-def clear_entries():
-    word_entry_H1.delete(0, END)
-    word_entry_H2.delete(0, END)
-    word_entry_H3.delete(0, END)
+import itertools
+import os
 
 def show_permutations():
-    H1=(word_entry_H1.get()).upper()
-    H2=(word_entry_H2.get()).upper()
-    H3=(word_entry_H3.get()).upper()
+    H1 = selected_option_h1.get()
+    H2 = selected_option_h2.get()
+    H3 = selected_option_h3.get()
     list1 = [H1, H2, H3]
-    list2 = ['e', 'i', 'u']
-    dosya_adi = H1+H2+H3+'.html'
+    #list2 = ['e', 'i', 'u']
+    list2 = ['ا', 'ي', 'ل']
+    
+    #dosya_adi = H1+H2+H3+'.html'
+    dosya_adi = 'dosya'+'.html'
     
     folder_name="kelimeler"
     folder_path = os.path.join(os.getcwd(), folder_name)
@@ -45,78 +24,89 @@ def show_permutations():
     
     #print(dosya_adi)
     
-    f = open(file_path, "w")
-    f.write('<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Kelime</title></head><body>')
-    # Tüm K, L, M permütasyonlarını oluştur
-    perms = itertools.permutations(list1)
-    # Her bir permütasyonu, a, b, c harflerinin tüm kombinasyonlarıyla birleştir
-    result = []
-    for perm in perms:
-        for combo in itertools.product(list2, repeat=len(list2)):
-            merged = [x for pair in zip(perm, combo) for x in pair]
-            result.append(''.join(merged))
-    # Tekrarlanan kelimeleri kaldır
-    result = set(result)
+    with open(file_path, "w", encoding="utf-8") as f:
+        
+        #f = open(file_path, "w")
+        f.write('<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Kelime</title></head><body>')
+        # Tüm K, L, M permütasyonlarını oluştur
+        perms = itertools.permutations(list1)
+        # Her bir permütasyonu, a, b, c harflerinin tüm kombinasyonlarıyla birleştir
+        result = []
+        for perm in perms:
+            for combo in itertools.product(list2, repeat=len(list2)):
+                merged = [x for pair in zip(perm, combo) for x in pair]
+                result.append(''.join(merged))
+        # Tekrarlanan kelimeleri kaldır
+        result = set(result)
 
-    # Sonucu alfabetik olarak sırala ve ekrana yazdır
-    for word in sorted(result):
-        f.write('<span>Google\'da ara : </span><a href="https://www.google.com/search?q=')
-        f.write(word)
-        f.write('" target="_blank"><span style="font-size: 24px;">')
-        f.write(word)
-        f.write('</span></a>&nbsp;&nbsp;&nbsp;')
-        #f.write('<br>')
+        # Sonucu alfabetik olarak sırala ve ekrana yazdır
+        for word in sorted(result):
+            f.write('<span>Google\'da ara : </span><a href="https://www.google.com/search?q=')
+            f.write(word)
+            f.write('" target="_blank"><span style="font-size: 24px;">')
+            f.write(word)
+            f.write('</span></a>&nbsp;&nbsp;&nbsp;')
+            #f.write('<br>')
 
-        f.write('<span>Google translate\'de ara : </span><a href="https://translate.google.com/?source=gtx&sl=auto&tl=tr&text=')
-        f.write(word)
-        f.write('" target="_blank"><span style="font-size: 24px;">')
-        f.write(word)
-        f.write('</span></a>')
-        f.write('<br>')
+            f.write('<span>Google translate\'de ara : </span><a href="https://translate.google.com/?source=gtx&sl=auto&tl=tr&text=')
+            f.write(word)
+            f.write('" target="_blank"><span style="font-size: 24px;">')
+            f.write(word)
+            f.write('</span></a>')
+            f.write('<br>')
 
-        #print(word)
+            #print(word)
 
-    f.write('</body></html>')
-    f.close()
-    os.startfile(file_path)
+        f.write('</body></html>')
+        f.close()
+        os.startfile(file_path)
 
-# Tkinter penceresini oluşturun
-#window = Tk(className='Kelime Oluştur by hsnylmz')
 window = ttk.Window(title="kelimeOluştur by hsnylmz", themename="darkly")
-window.geometry("550x80")
-#windowBackground = '#ADD8E6'
-#window.configure(bg=windowBackground)
-window.resizable(False,False)
-try:
-    window.iconbitmap('elif.ico')
-except:
-    pass
-    
-yazi=Label(window, text="Harfleri Giriniz ", font=('Helvetica bold',18))
-yazi.pack(side='left', padx=5, pady=5)
+window.geometry("350x80")
 
-word_entry_H1 = Entry(window, width=3, justify='center')
-word_entry_H1.config(font=('Helvetica bold',18))
-word_entry_H1.pack(side='left', padx=5, pady=5)
+# Açılır menüdeki seçenekleri belirleyin
+options = ['ا','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ', 'ف', 'ق', 'ك', 'ل' ,'م' ,'ن' ,'و' ,'ه','ي']
+options = [x for x in options]
 
 
-word_entry_H2 = Entry(window, width=3, justify='center')
-word_entry_H2.config(font=('Helvetica bold',18))
-word_entry_H2.pack(side='left', padx=5, pady=5)
+# Seçeneği depolayacak bir değişken oluşturun
+selected_option_h1 = tk.StringVar(window)
+selected_option_h1.set(options[0])  # Varsayılan olarak ilk seçeneği ayarlayın
 
-word_entry_H3 = Entry(window, width=3, justify='center')
-word_entry_H3.config(font=('Helvetica bold',18))
-word_entry_H3.pack(side='left', padx=5, pady=5)
+selected_option_h2 = tk.StringVar(window)
+selected_option_h2.set(options[0])  # Varsayılan olarak ilk seçeneği ayarlayın
 
-# Kelime girişi yaptıktan sonra sıralamaları göstermek için bir düğme oluşturun
-permute_button = ttk.Button(window, text="OLUŞTUR", command=check_input, width=10, bootstyle=SUCCESS)
-permute_button.pack(side='left', padx=5, pady=5)
+selected_option_h3 = tk.StringVar(window)
+selected_option_h3.set(options[0])  # Varsayılan olarak ilk seçeneği ayarlayın
 
-clear_button = ttk.Button(window, text="TEMİZLE", command=clear_entries, width=10, bootstyle=DANGER)
-clear_button.pack(side='left', padx=5, pady=5)
 
-word_entry_H1.focus_set()
-limit_entry_to_one_char(word_entry_H1)
-limit_entry_to_one_char(word_entry_H2)
-limit_entry_to_one_char(word_entry_H3)
+option_menu_font = ("Arial", 24)
+button_font = ("Arial", 16)
+
+# Açılır menüyü oluşturun
+option_menu_h1 = tk.OptionMenu(window, selected_option_h1, *options)
+option_menu_h1.config(font=option_menu_font)
+option_menu_h1.pack(side='left', padx=5, pady=5)
+
+option_menu_h2 = tk.OptionMenu(window, selected_option_h2, *options)
+option_menu_h2.config(font=option_menu_font)
+option_menu_h2.pack(side='left', padx=5, pady=5)
+
+option_menu_h3 = tk.OptionMenu(window, selected_option_h3, *options)
+option_menu_h3.config(font=option_menu_font)
+option_menu_h3.pack(side='left', padx=5, pady=5)
+
+
+# Kullanıcının seçim yapmasını bekleyin
+def get_user_input():
+    h1 = selected_option_h1.get()
+    h2 = selected_option_h2.get()
+    h3 = selected_option_h3.get()
+    print("Kullanıcı seçimi:", h1, h2 ,h3)
+
+button = tk.Button(window, text="Seçimi Onayla",command=show_permutations)
+button.config(font=button_font)
+button.pack(side='left', padx=5, pady=5)
+
+
 window.mainloop()
